@@ -1,0 +1,111 @@
+# ======================================================================
+# rules.yaml — AI 平台独立策略版（OpenAI / Claude / Gemini）
+# ======================================================================
+
+# ---------------------------------------------------------
+# ① 局域网与系统直连（最高优先级）
+# ---------------------------------------------------------
+- DOMAIN-SUFFIX,local,DIRECT
+- DOMAIN-SUFFIX,lan,DIRECT
+- DOMAIN-SUFFIX,localhost,DIRECT
+- IP-CIDR,0.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+- IP-CIDR,198.18.0.0/16,DIRECT,no-resolve
+- IP-CIDR6,::1/128,DIRECT,no-resolve
+- IP-CIDR6,fc00::/7,DIRECT,no-resolve
+- IP-CIDR6,fe80::/10,DIRECT,no-resolve
+- IP-CIDR6,fd00::/8,DIRECT,no-resolve
+
+# ---------------------------------------------------------
+# ② AI 三大平台独立策略
+# ---------------------------------------------------------
+
+# OpenAI（ChatGPT / API / DALL·E 等）
+- RULE-SET,openai,🧠 OpenAI
+
+# Claude（Anthropic）
+- RULE-SET,claude,🧠 Claude
+# 强制禁止 QUIC（防止地区封锁）
+- AND,((DOMAIN-SUFFIX,claude.ai),(NETWORK,udp)),REJECT
+- AND,((DOMAIN-SUFFIX,anthropic.com),(NETWORK,udp)),REJECT
+
+# Google Gemini（AI Studio + API）
+- RULE-SET,gemini,🧠 Gemini
+
+
+# ---------------------------------------------------------
+# ③ Google / Apple / Microsoft / Github 等大平台
+# ---------------------------------------------------------
+- RULE-SET,google,📢 谷歌服务
+- RULE-SET,googlesearch,📢 谷歌服务
+- RULE-SET,apple,🍎 苹果服务
+- RULE-SET,icloud,🔗 直连域名
+- RULE-SET,microsoft,Ⓜ️ 微软服务
+- RULE-SET,github,👨‍💻‍ Github
+- RULE-SET,gitbook,👨‍💻‍ Github
+- RULE-SET,youtube,📹 油管视频
+- RULE-SET,facebook,🔵 Facebook
+- RULE-SET,tiktok,🎵 TikTok
+- RULE-SET,telegram,📲 电报消息
+- RULE-SET,discord,📲 电报消息
+- RULE-SET,ebay,🛍️ Ebay
+- RULE-SET,cryptocurrency,💵 Cryptocurrency
+- RULE-SET,okx,💵 Cryptocurrency
+- RULE-SET,spotify,🎧 Spotify
+
+# ---------------------------------------------------------
+# ④ 电商 / 分区域分流
+# ---------------------------------------------------------
+- DOMAIN-SUFFIX,aliexpress.com,🛍️ Aliexpress
+- DOMAIN-SUFFIX,aliexpress.ru,🛍️ Aliexpress
+- DOMAIN-SUFFIX,temu.com,🛍️ Temu
+
+- DOMAIN-SUFFIX,shopee.sg,🇸🇬 新加坡节点
+- DOMAIN-SUFFIX,shopee.tw,🇹🇼 台湾节点
+- DOMAIN-SUFFIX,shopee.com.tw,🇹🇼 台湾节点
+- DOMAIN-SUFFIX,shopee.ph,🇵🇭 菲律宾
+- DOMAIN-SUFFIX,shopee.co.th,🇹🇭 泰国节点
+- DOMAIN-SUFFIX,shopee.my,🇲🇾 马来西亚
+- DOMAIN-SUFFIX,shopee.com.my,🇲🇾 马来西亚
+- DOMAIN-SUFFIX,shopee.vn,🇻🇳 越南
+
+# ---------------------------------------------------------
+# ⑤ 特殊域名
+# ---------------------------------------------------------
+- DOMAIN-SUFFIX,githubusercontent.com,👨‍💻‍ Github
+- DOMAIN-SUFFIX,bilibili.com,DIRECT,tcp
+- DOMAIN,clash.razord.top,🔗 直连域名
+- DOMAIN,yacd.haishan.me,🔗 直连域名
+
+# ---------------------------------------------------------
+# ⑥ 广告拦截
+# ---------------------------------------------------------
+- GEOSITE,category-ads-all,🛑 广告拦截
+- RULE-SET,reject,REJECT
+
+# ---------------------------------------------------------
+# ⑦ GEOIP 规则
+# ---------------------------------------------------------
+- GEOIP,LAN,DIRECT,no-resolve
+- GEOIP,private,DIRECT,no-resolve
+- GEOIP,CN,DIRECT,no-resolve
+
+# 非中国 → 代理
+- GEOSITE,geolocation-!cn,🪜 代理域名
+
+# ---------------------------------------------------------
+# ⑧ 基础直连规则
+# ---------------------------------------------------------
+- RULE-SET,private,🔗 直连域名
+- RULE-SET,direct,🔗 直连域名
+- RULE-SET,lancidr,🔗 直连域名
+- RULE-SET,cncidr,🔗 直连域名
+
+# ---------------------------------------------------------
+# ⑨ 兜底规则：所有流量走“漏网之鱼”
+# ---------------------------------------------------------
+- MATCH,🐟 漏网之鱼

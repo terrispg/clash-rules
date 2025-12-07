@@ -1,0 +1,81 @@
+# ======================================================================
+#  DNS 模块（Clash.Meta 专属优化）
+#  提升稳定性、减少 DNS 泄漏、兼容 AI 平台与 QUIC 屏蔽需求
+# ======================================================================
+
+enable: true
+ipv6: false
+enhanced-mode: fake-ip
+
+# -----------------------------
+# Fake-IP 地址池
+# -----------------------------
+fake-ip-range: 198.18.0.1/16
+
+# 保留不使用 Fake IP 的域名（避免 App 解析问题）
+fake-ip-filter:
+  - "okx.com"
+  - "*.okx.com"
+  - "okcoin.com"
+  - "*.okcoin.com"
+  - "dpmlk.com"
+  - "*.dpmlk.com"
+  - "bank"
+  - "*.bank"
+  - "*.lan"
+  - localhost
+  - "*.local"
+
+# -----------------------------
+# 国内常用 DNS（速度最快 + 兼容）
+# -----------------------------
+nameserver:
+  - 223.5.5.5
+  - https://dns.alidns.com/dns-query
+  - https://1.1.1.1/dns-query
+  - https://dns.google/dns-query
+  - 180.76.76.76
+  - 119.29.29.29
+  - 117.50.10.10
+  - 117.50.11.11
+  - 114.114.114.114
+  - https://doh.360.cn/dns-query
+
+# -----------------------------
+# 国外域名走更干净的 DNS
+# -----------------------------
+proxy-server-nameserver:
+  - https://1.1.1.1/dns-query
+
+# -----------------------------
+# fallback 用于兜底国际解析
+# -----------------------------
+fallback:
+  - 8.8.8.8
+  - tls://dns.google:853
+  - tls://1.0.0.1:853
+  - tls://dns.rubyfish.cn:853
+  - https://cloudflare-dns.com/dns-query
+  - https://dns.rubyfish.cn/dns-query
+  - https://dns.google/dns-query
+
+fallback-filter:
+  geoip: true
+  ipcidr:
+    - 0.0.0.0/0
+    - ::/0
+  domain:
+    - "+.google.com"
+    - "+.facebook.com"
+    - "+.youtube.com"
+    - "+.xn--ngstr-lra8j.com"
+    - "+.googleapis.cn"
+    - "+.gvt1.com"
+
+# -----------------------------
+# nameserver-policy：为国内网站强制使用国内 DNS
+# -----------------------------
+nameserver-policy:
+  "geosite:cn":
+    - 223.5.5.5
+    - https://dns.alidns.com/dns-query
