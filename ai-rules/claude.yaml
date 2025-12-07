@@ -1,0 +1,11 @@
+payload:
+  - DOMAIN-SUFFIX,claude.ai
+  - DOMAIN-SUFFIX,anthropic.com
+  - DOMAIN-SUFFIX,api.anthropic.com
+  - DOMAIN-SUFFIX,claudeusercontent.com
+  - DOMAIN-SUFFIX,cdn.anthropic.com
+
+  - AND,((DOMAIN-SUFFIX,claude.ai),(NETWORK,udp)),REJECT
+  - AND,((DOMAIN-SUFFIX,anthropic.com),(NETWORK,udp)),REJECT
+  - AND,((DOMAIN-SUFFIX,claudeusercontent.com),(NETWORK,udp)),REJECT
+  - AND,((DOMAIN-SUFFIX,cdn.anthropic.com),(NETWORK,udp)),REJECT

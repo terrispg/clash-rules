@@ -1,0 +1,7 @@
+payload:
+  - DOMAIN-SUFFIX,openai.com
+  - DOMAIN-SUFFIX,api.openai.com
+  - DOMAIN-SUFFIX,chat.openai.com
+  - DOMAIN-SUFFIX,oaiusercontent.com
+  - DOMAIN-SUFFIX,openaipublic.blob.core.windows.net
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net
